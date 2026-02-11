@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Status</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Performance -->
+  <meta http-equiv="Cache-Control" content="max-age=3600" />
+
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto;
+      background: #0b1c26;
+      color: #e5e7eb;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .updated {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #2dd4bf;
+    }
+
+    .error {
+      color: #f87171;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🌊</h1>
+  <div class="updated" id="updated">A carregar dados…</div>
+
+  <script>
+    fetch("./ericeira.json")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erro ao carregar JSON");
+        }
+        return response.json();
+      })
+      .then(json => {
+        const el = document.getElementById("updated");
+
+        if (!json.generated_at) {
+          el.textContent = "JSON carregado, mas sem data de geração";
+          return;
+        }
+
+        const d = new Date(json.generated_at);
+
+        el.textContent =
+          "Última atualização: " +
+          d.toLocaleString("pt-PT", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+          });
+      })
+      .catch(err => {
+        const el = document.getElementById("updated");
+        el.textContent = "Erro ao carregar dados";
+        el.classList.add("error");
+        console.error(err);
+      });
+  </script>
+
+</body>
+
+</html>
 
