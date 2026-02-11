@@ -17,7 +17,7 @@ HEADERS = {"Authorization": api_key}
 # Coordenadas dos spots
 # ================================
 SPOTS = {
-    "peniche":   {"lat": 39.363007, "lng": -9.414682},
+    #--------"peniche":   {"lat": 39.363007, "lng": -9.414682},
     "ericeira":  {"lat": 38.966127, "lng": -9.424674},
     #--------"lisboa":    {"lat": 38.646397, "lng": -9.330245},
     #--------"sines":     {"lat": 37.850821, "lng": -8.805547},
