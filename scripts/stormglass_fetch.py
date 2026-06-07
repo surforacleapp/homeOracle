@@ -17,13 +17,13 @@ HEADERS = {"Authorization": api_key}
 # Coordenadas dos spots
 # ================================
 SPOTS = {
-    "nazare":         {"lat": 39.601, "lng": -9.071},
+    # "nazare":         {"lat": 39.601, "lng": -9.071},
     "peniche":        {"lat": 39.363, "lng": -9.415},
     "ericeira":       {"lat": 38.966, "lng": -9.425},
     "lisboa":         {"lat": 38.646, "lng": -9.330},
     "cascais":        {"lat": 38.697, "lng": -9.423},
     "costa_caparica": {"lat": 38.642, "lng": -9.235},
-    "sines":          {"lat": 37.851, "lng": -8.806},
+    # "sines":          {"lat": 37.851, "lng": -8.806},
 }
 
 # ================================
