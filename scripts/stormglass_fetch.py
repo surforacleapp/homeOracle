@@ -53,6 +53,41 @@ os.makedirs("docs", exist_ok=True)
 # ================================
 # Loop por cada spot
 # ================================
+def assign_tide_phases(forecast_hours, tide_extremes):
+    """
+    Assigns a tide phase (high/mid/low) to each forecast hour
+    based on the nearest tide extreme.
+    """
+    def parse_time(t):
+        return datetime.fromisoformat(t.replace("Z", "+00:00"))
+
+    extreme_times = []
+    for extreme in tide_extremes:
+        extreme_times.append({
+            "time": parse_time(extreme["time"]),
+            "type": extreme["type"]  # "high" or "low"
+        })
+
+    for hour in forecast_hours:
+        hour_time = parse_time(hour["time"])
+        nearest = None
+        min_diff = float("inf")
+
+        for extreme in extreme_times:
+            diff = abs((hour_time - extreme["time"]).total_seconds() / 3600)
+            if diff < min_diff:
+                min_diff = diff
+                nearest = extreme
+
+        if nearest is None:
+            hour["tide_phase"] = "mid"
+        elif min_diff <= 1.5:
+            hour["tide_phase"] = nearest["type"]  # "high" or "low"
+        else:
+            hour["tide_phase"] = "mid"
+
+    return forecast_hours
+
 for name, spot in SPOTS.items():
     lat = spot["lat"]
     lng = spot["lng"]
@@ -78,6 +113,7 @@ for name, spot in SPOTS.items():
     resp_tide = requests.get(tide_url, headers=HEADERS, params=tide_params)
     resp_tide.raise_for_status()
     tide_data = resp_tide.json().get("data", [])
+    forecast_data = assign_tide_phases(forecast_data, tide_data)
 
     # --- Estrutura final do JSON
     output = {
